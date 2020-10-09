@@ -1,5 +1,20 @@
 # Changelog
 
+## New since 0.14.0
+
+- Android: scoped storage example [#1170](https://github.com/mapsforge/mapsforge/pull/1170)
+- Render theme from Android content providers [#1169](https://github.com/mapsforge/mapsforge/pull/1169)
+- AssetsRenderTheme: stream improvements [#1167](https://github.com/mapsforge/mapsforge/pull/1167)
+- Layer scroll event option [#1163](https://github.com/mapsforge/mapsforge/pull/1163)
+  - `Parameters.LAYER_SCROLL_EVENT`
+- Many other minor improvements and bug fixes
+- [Solved issues](https://github.com/mapsforge/mapsforge/issues?q=is%3Aclosed+milestone%3A0.15.0)
+
+## Version 0.14.0 (2020-08-25)
+
+- Many other minor improvements and bug fixes
+- [Solved issues](https://github.com/mapsforge/mapsforge/issues?q=is%3Aclosed+milestone%3A0.14.0)
+
 ## Version 0.13.0 (2020-01-12)
 
 - Fix marker placement on Android 9+ [#1138](https://github.com/mapsforge/mapsforge/issues/1138)
@@ -112,6 +127,7 @@
 - New default internal render theme [#903](https://github.com/mapsforge/mapsforge/issues/903)
 - Internal render themes new SVG resources [#904](https://github.com/mapsforge/mapsforge/issues/904)
 - Render theme resources optional location prefixes [#847](https://github.com/mapsforge/mapsforge/issues/847)
+- Render theme from input stream [#872](https://github.com/mapsforge/mapsforge/issues/872)
 - SpatiaLite natives published artifacts [#849](https://github.com/mapsforge/mapsforge/issues/849)
 - SNAPSHOT builds publish to Sonatype OSSRH [#873](https://github.com/mapsforge/mapsforge/issues/873)
 - Deprecate Maven build [#852](https://github.com/mapsforge/mapsforge/issues/852)

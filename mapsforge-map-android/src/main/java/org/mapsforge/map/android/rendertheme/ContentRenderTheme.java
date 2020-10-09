@@ -1,6 +1,5 @@
 /*
- * Copyright 2010, 2011, 2012 mapsforge.org
- * Copyright 2016-2020 devemux86
+ * Copyright 2020 devemux86
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -15,8 +14,8 @@
  */
 package org.mapsforge.map.android.rendertheme;
 
-import android.content.res.AssetManager;
-import android.text.TextUtils;
+import android.content.ContentResolver;
+import android.net.Uri;
 import org.mapsforge.core.util.Utils;
 import org.mapsforge.map.rendertheme.XmlRenderTheme;
 import org.mapsforge.map.rendertheme.XmlRenderThemeMenuCallback;
@@ -25,35 +24,35 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * An AssetsRenderTheme allows for customizing the rendering style of the map
- * via an XML from the Android assets folder.
+ * An ContentRenderTheme allows for customizing the rendering style of the map
+ * via an XML from the Android content providers.
  */
-public class AssetsRenderTheme implements XmlRenderTheme {
+public class ContentRenderTheme implements XmlRenderTheme {
 
-    private final AssetManager assetManager;
-    private final String fileName;
+    private final ContentResolver contentResolver;
     private XmlRenderThemeMenuCallback menuCallback;
     private final String relativePathPrefix;
+    private final Uri uri;
 
     /**
-     * @param assetManager       the Android asset manager.
+     * @param contentResolver    the Android content resolver.
      * @param relativePathPrefix the prefix for all relative resource paths.
-     * @param fileName           the path to the XML render theme file.
+     * @param uri                the XML render theme URI.
      */
-    public AssetsRenderTheme(AssetManager assetManager, String relativePathPrefix, String fileName) {
-        this(assetManager, relativePathPrefix, fileName, null);
+    public ContentRenderTheme(ContentResolver contentResolver, String relativePathPrefix, Uri uri) {
+        this(contentResolver, relativePathPrefix, uri, null);
     }
 
     /**
-     * @param assetManager       the Android asset manager.
+     * @param contentResolver    the Android content resolver.
      * @param relativePathPrefix the prefix for all relative resource paths.
-     * @param fileName           the path to the XML render theme file.
+     * @param uri                the XML render theme URI.
      * @param menuCallback       the interface callback to create a settings menu on the fly.
      */
-    public AssetsRenderTheme(AssetManager assetManager, String relativePathPrefix, String fileName, XmlRenderThemeMenuCallback menuCallback) {
-        this.assetManager = assetManager;
+    public ContentRenderTheme(ContentResolver contentResolver, String relativePathPrefix, Uri uri, XmlRenderThemeMenuCallback menuCallback) {
+        this.contentResolver = contentResolver;
         this.relativePathPrefix = relativePathPrefix;
-        this.fileName = fileName;
+        this.uri = uri;
         this.menuCallback = menuCallback;
     }
 
@@ -61,10 +60,10 @@ public class AssetsRenderTheme implements XmlRenderTheme {
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
-        } else if (!(obj instanceof AssetsRenderTheme)) {
+        } else if (!(obj instanceof ContentRenderTheme)) {
             return false;
         }
-        AssetsRenderTheme other = (AssetsRenderTheme) obj;
+        ContentRenderTheme other = (ContentRenderTheme) obj;
         try {
             if (getRenderThemeAsStream() != other.getRenderThemeAsStream()) {
                 return false;
@@ -91,7 +90,7 @@ public class AssetsRenderTheme implements XmlRenderTheme {
 
     @Override
     public InputStream getRenderThemeAsStream() throws IOException {
-        return this.assetManager.open((TextUtils.isEmpty(this.relativePathPrefix) ? "" : this.relativePathPrefix) + this.fileName);
+        return this.contentResolver.openInputStream(uri);
     }
 
     @Override

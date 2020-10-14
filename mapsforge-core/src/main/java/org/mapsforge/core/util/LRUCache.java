@@ -35,7 +35,7 @@ public class LRUCache<K, V> extends LinkedHashMap<K, V> {
         return (int) (capacity / LOAD_FACTOR) + 2;
     }
 
-    public final int capacity;
+    private int capacity;
 
     /**
      * @param capacity the maximum capacity of this cache.
@@ -44,6 +44,14 @@ public class LRUCache<K, V> extends LinkedHashMap<K, V> {
     public LRUCache(int capacity) {
         super(calculateInitialCapacity(capacity), LOAD_FACTOR, true);
         this.capacity = capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public int getCapacity() {
+        return capacity;
     }
 
     @Override

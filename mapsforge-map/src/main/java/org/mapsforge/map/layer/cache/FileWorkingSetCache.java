@@ -31,7 +31,7 @@ class FileWorkingSetCache<T> extends WorkingSetCache<T, File> {
 
     @Override
     protected boolean removeEldestEntry(Map.Entry<T, File> eldest) {
-        if (size() > this.capacity) {
+        if (size() > this.getCapacity()) {
             File file = eldest.getValue();
             if (file != null && file.exists() && !file.delete()) {
                 LOGGER.severe("could not delete file: " + file);

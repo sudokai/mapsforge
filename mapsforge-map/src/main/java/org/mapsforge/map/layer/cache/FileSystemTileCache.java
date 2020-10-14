@@ -274,7 +274,7 @@ public class FileSystemTileCache implements TileCache {
     public int getCapacity() {
         try {
             lock.readLock().lock();
-            return this.lruCache.capacity;
+            return this.lruCache.getCapacity();
         } finally {
             lock.readLock().unlock();
         }

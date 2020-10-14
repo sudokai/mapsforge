@@ -90,7 +90,7 @@ public class TileBasedLabelStore extends WorkingSetCache<Tile, List<MapElementCo
 
     @Override
     protected boolean removeEldestEntry(Map.Entry<Tile, List<MapElementContainer>> eldest) {
-        if (size() > this.capacity) {
+        if (size() > this.getCapacity()) {
             return true;
         }
         return false;

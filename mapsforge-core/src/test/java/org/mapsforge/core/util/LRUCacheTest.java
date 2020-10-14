@@ -27,7 +27,7 @@ public class LRUCacheTest {
 
     private static LRUCache<String, String> createLRUCache(int capacity) {
         LRUCache<String, String> lruCache = new LRUCache<>(capacity);
-        Assert.assertEquals(capacity, lruCache.capacity);
+        Assert.assertEquals(capacity, lruCache.getCapacity());
 
         return lruCache;
     }

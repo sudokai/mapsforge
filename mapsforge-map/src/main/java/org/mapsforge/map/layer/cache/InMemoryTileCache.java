@@ -64,7 +64,7 @@ public class InMemoryTileCache implements TileCache {
 
     @Override
     public synchronized int getCapacity() {
-        return this.lruCache.capacity;
+        return this.lruCache.getCapacity();
     }
 
     @Override
@@ -120,6 +120,10 @@ public class InMemoryTileCache implements TileCache {
 
     @Override
     public synchronized void setWorkingSet(Set<Job> jobs) {
+        int newCapacity = Math.max(jobs.size(), this.lruCache.getCapacity());
+        if (this.lruCache.getCapacity() < newCapacity) {
+            this.lruCache.setCapacity(newCapacity);
+        }
         this.lruCache.setWorkingSet(jobs);
     }
 
@@ -144,7 +148,7 @@ class BitmapLRUCache extends WorkingSetCache<Job, TileBitmap> {
 
     @Override
     protected boolean removeEldestEntry(Map.Entry<Job, TileBitmap> eldest) {
-        if (size() > this.capacity) {
+        if (size() > this.getCapacity()) {
             TileBitmap bitmap = eldest.getValue();
             if (bitmap != null) {
                 bitmap.decrementRefCount();

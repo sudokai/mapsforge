@@ -2,7 +2,6 @@
  * Copyright 2010, 2011, 2012 mapsforge.org
  * Copyright 2013-2014 Ludwig M Brinckmann
  * Copyright 2014-2016 devemux86
- * Copyright 2018 Adrian Batzill
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -25,8 +24,6 @@ import android.util.Pair;
 
 import com.caverock.androidsvg.SVG;
 
-import org.mapsforge.core.graphics.GraphicUtils;
-
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -44,12 +41,34 @@ public class AndroidSvgBitmap extends AndroidResourceBitmap {
 
             double scale = scaleFactor / Math.sqrt((picture.getHeight() * picture.getWidth()) / defaultSize);
 
-            float[] bmpSize = GraphicUtils.imageSize(picture.getWidth(), picture.getHeight(), (float) scale, width, height, percent);
+            float bitmapWidth = (float) (picture.getWidth() * scale);
+            float bitmapHeight = (float) (picture.getHeight() * scale);
 
-            android.graphics.Bitmap bitmap = android.graphics.Bitmap.createBitmap((int) Math.ceil(bmpSize[0]),
-                    (int) Math.ceil(bmpSize[1]), AndroidGraphicFactory.TRANSPARENT_BITMAP);
+            float aspectRatio = (1f * picture.getWidth()) / picture.getHeight();
+
+            if (width != 0 && height != 0) {
+                // both width and height set, override any other setting
+                bitmapWidth = width;
+                bitmapHeight = height;
+            } else if (width == 0 && height != 0) {
+                // only width set, calculate from aspect ratio
+                bitmapWidth = height * aspectRatio;
+                bitmapHeight = height;
+            } else if (width != 0 && height == 0) {
+                // only height set, calculate from aspect ratio
+                bitmapHeight = width / aspectRatio;
+                bitmapWidth = width;
+            }
+
+            if (percent != 100) {
+                bitmapWidth *= percent / 100f;
+                bitmapHeight *= percent / 100f;
+            }
+
+            android.graphics.Bitmap bitmap = android.graphics.Bitmap.createBitmap((int) Math.ceil(bitmapWidth),
+                    (int) Math.ceil(bitmapHeight), AndroidGraphicFactory.TRANSPARENT_BITMAP);
             Canvas canvas = new Canvas(bitmap);
-            canvas.drawPicture(picture, new RectF(0, 0, bmpSize[0], bmpSize[1]));
+            canvas.drawPicture(picture, new RectF(0, 0, bitmapWidth, bitmapHeight));
 
             return bitmap;
         } catch (Exception e) {
